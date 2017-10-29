@@ -16,6 +16,8 @@ public class main {
         String rd;
         String op;
 
+
+        String test = "";
         //----Read file and input each line in array-list----//
         Scanner file = new Scanner(new File("output.txt"));
         List<String> line = new ArrayList<>();
@@ -29,9 +31,43 @@ public class main {
             rs = bin.substring(10,13);
             rt = bin.substring(13,16);
 
-            System.out.println("opcode : " + op + " rs : " + rs + " rt : " + rt);
+
+            switch (op){
+
+                case "000" :
+                    test = "add";
+
+                    break;
+                case "001" :
+                    test = "nand";
+                    break;
+                case "010" :
+                    test = "lw";
+                    break;
+                case "011" :
+                    test = "sw";
+                    break;
+                case "100" :
+                    test = "beq";
+                    break;
+                case "101" :
+                    test = "jalr";
+                    break;
+                case "110" :
+                    test = "halt";
+                    break;
+                case "111" :
+                    test = "noop";
+                    break;
+                default:
+                    System.out.println("Error : Put wrong OP CODE");
+            }
+            System.out.println(test);
+
+            //System.out.println("opcode : " + op + " rs : " + rs + " rt : " + rt);
             //System.out.println("op code : " + op + "bin left : " + bin);
         }
+
     }
 
     public static String toBinary(String int1){
