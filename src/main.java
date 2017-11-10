@@ -1,3 +1,6 @@
+import instruction.add;
+import instruction.nand;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,10 +43,12 @@ public class main {
                 switch (op){
                     case "000" :
                         test = "add";
+                        add adds = new add(rs);
 
                         break;
                     case "001" :
                         test = "nand";
+                        nand nand;
                         break;
                     case "010" :
                         test = "lw";
