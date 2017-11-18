@@ -19,6 +19,9 @@ public class main {
         String rd;
         String op;
 
+        int Register[] = new int[8];
+
+        System.out.println("Example Run of Simulator");
 
         String test = "";
         //----Read file and input each line in array-list----//
@@ -28,11 +31,12 @@ public class main {
         String[] mem = line.toArray(new String[0]); //Add every lines form array-list to array
         //---------------------------------------------------//
         for(int i = 0 ; i < mem.length ; i++){
+            System.out.println("@@@");
+            System.out.println("state:");
             bin = toBinary(Integer.toBinaryString(Integer.parseInt(mem[i])));
 
             op = bin.substring(7,10);
-            rs = bin.substring(10,13);
-            rt = bin.substring(13,16);
+
 
 
             if ((Integer.parseInt(mem[i]) > -32768 && (Integer.parseInt(mem[i])) < 32767))
@@ -42,25 +46,37 @@ public class main {
             else {
                 switch (op){
                     case "000" :
-                        test = "add";
+                        //test = "add";
+                        rs = bin.substring(10,13);
+                        rt = bin.substring(13,16);
                         add adds = new add(rs);
 
                         break;
                     case "001" :
-                        test = "nand";
+                        //test = "nand";
+                        rs = bin.substring(10,13);
+                        rt = bin.substring(13,16);
                         nand nand;
                         break;
                     case "010" :
-                        test = "lw";
+                        //test = "lw";
+                        rs = bin.substring(10,13);
+                        rt = bin.substring(13,16);
                         break;
                     case "011" :
-                        test = "sw";
+                        //test = "sw";
+                        rs = bin.substring(10,13);
+                        rt = bin.substring(13,16);
                         break;
                     case "100" :
-                        test = "beq";
+                        //test = "beq";
+                        rs = bin.substring(10,13);
+                        rt = bin.substring(13,16);
                         break;
                     case "101" :
-                        test = "jalr";
+                        //test = "jalr";
+                        rs = bin.substring(10,13);
+                        rt = bin.substring(13,16);
                         break;
                     case "110" :
                         test = "halt";
@@ -71,12 +87,19 @@ public class main {
                     default:
                         System.out.println("Error : Put wrong OP CODE");
                 }
-                System.out.println(test);
+                //System.out.println(test);
+                for (int j = 0; j<mem.length;j++)
+                    System.out.println("    memory[" + j + "]" + "= " + mem[j] );
+                System.out.println("registers:");
+                for (int k= 0; k<Register.length;k++) {
+                    System.out.println("    register[" + k + "]" + "= " + Register[k]);
+                }
             }
 
+            System.out.println("end state\n");
 
-            //System.out.println("opcode : " + op + " rs : " + rs + " rt : " + rt);
-            //System.out.println("op code : " + op + "bin left : " + bin);
+
+
         }
 
     }
