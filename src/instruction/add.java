@@ -4,17 +4,14 @@ package instruction;
  * Created by ASUS on 11/10/2017.
  */
 public class add {
-
-    register rs;
-    String rt;
-    String rd;
-    public add(String rs){
-        this.rs = new register(rs);
-
-
+    int result;
+    int rs,rt;
+    public add(int rs ,int rt ){
+        this.rs = rs;
+        this.rt = rt;
     }
 
-    public void doAdd(){
-
+    public int doAdd(){
+        return this.rs+this.rt;
     }
 }

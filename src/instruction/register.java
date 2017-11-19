@@ -8,6 +8,10 @@ public class register {
     {
         this.r = r;
         tmp = Integer.parseInt(this.r);
-        System.out.println(tmp);
+        //System.out.println(tmp);
+    }
+
+    int convert(){
+        return this.tmp;
     }
 }
