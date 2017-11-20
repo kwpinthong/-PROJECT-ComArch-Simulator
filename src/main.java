@@ -86,7 +86,7 @@ public class main {
                         rt = bin.substring(13,16);
                         offset = bin.substring(16,32);
 
-                        Register[convertBinarytoDecimal(rt)] = Integer.parseInt(mem[state + convertBinarytoDecimal(offset) + convertBinarytoDecimal(rs)*4]);
+                        Register[convertBinarytoDecimal(rt)] = Integer.parseInt(mem[convertBinarytoDecimal(offset) + Register[convertBinarytoDecimal(rs)]]);
                         //Done
                         break;
                     case "011" :
