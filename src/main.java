@@ -21,6 +21,7 @@ public class main {
         String rt;
         String rd;
         String op;
+        int sizeofline;
         int yow[] = new int[0];
         String offset;
         int state=0;
@@ -33,16 +34,20 @@ public class main {
 
         String test = "";
         //----Read file and input each line in array-list----//
-        Scanner file = new Scanner(new File("inputMulti.txt"));
+        Scanner file = new Scanner(new File("inputComb.txt"));
         List<String> line = new ArrayList<>();
         while (file.hasNextLine()){line.add(file.nextLine());}
-        String[] mem = line.toArray(new String[0]); //Add every lines form array-list to array
-        for (int i=0;i<mem.length;i++) {
-            System.out.println("mem[ "+i+" ] " + mem[i]);
-        }
+        String[] mem = new String[65536];
+        String[] mem1 = line.toArray(new String[0]); //Add every lines form array-list to array
+        sizeofline = mem1.length;
+        for(int i=0; i < mem1.length; i++) mem[i] = mem1[i];
+
+        for (int i=0;i<mem1.length;i++) System.out.println("mem[ "+i+" ] " + mem[i]);
+
+
         //---------------------------------------------------//
-        for(; state < mem.length ; state++){
-            printState(mem,Register,state);
+        for(; state < sizeofline ; state++){
+            printState(mem,Register,state,sizeofline);
 
             bin = toBinary(Integer.toBinaryString(Integer.parseInt(mem[state])));
 
@@ -92,9 +97,11 @@ public class main {
                         break;
                     case "011" :
                         //test = "sw";
+
                         rs = bin.substring(10,13);
                         rt = bin.substring(13,16);
                         offset = bin.substring(16,32);
+                        
 
                         mem[convertBinarytoDecimal(rs) + convertBinarytoDecimal(offset)] =  String.valueOf(Register[convertBinarytoDecimal(rt)]);
                         break;
@@ -106,14 +113,24 @@ public class main {
                         //System.out.println(bin.substring(16,32));
                         //offset = convertBinarytoDecimal(bin.substring(16,32));
 
-                        if(Register[convertBinarytoDecimal(rs)] == Register[convertBinarytoDecimal(rt)]) state = state + convertBinarytoDecimal(offset);
+                        if(Register[convertBinarytoDecimal(rs)] == Register[convertBinarytoDecimal(rt)]) {
+                            state = state + convertBinarytoDecimal(offset);
+                            break;
+                        }
                         else break;
 
                     case "101" :
                         //test = "jalr";
                         rs = bin.substring(10,13);
                         rd = bin.substring(13,16);
-                        break;
+
+                        Register[convertBinarytoDecimal(rd)] = state+1;
+                        if(Register[convertBinarytoDecimal(rs)] == Register[convertBinarytoDecimal(rd)]) break;
+                        else {
+                            state = Register[convertBinarytoDecimal(rs)];
+                            break;
+                        }
+
                     case "110" :
                         test = "halt";
                         System.out.println("machine halted");
@@ -128,6 +145,8 @@ public class main {
                         System.out.println("Error : Put wrong OP CODE");
                 }
 
+
+
             }
 
 
@@ -135,6 +154,7 @@ public class main {
 
 
         }
+
 
 
     }
@@ -178,10 +198,10 @@ public class main {
         return tmp;
     }
 
-    public static void printState(String []mem,int []Register,int count){
+    public static void printState(String []mem,int []Register,int count,int size){
 
         System.out.println("\n@@@\n" + "\tpc " + count +"\n\tmemory:");
-        for (int i=0;i<mem.length;i++) {
+        for (int i=0;i<size;i++) {
             System.out.println("\t\tmem[ "+i+" ] " + mem[i]);
         }
         System.out.println("\tregister:");
