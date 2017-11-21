@@ -22,7 +22,6 @@ public class main {
         String rd;
         String op;
         int sizeofline;
-        int yow[] = new int[0];
         String offset;
         int state=0;
 
@@ -101,7 +100,7 @@ public class main {
                         rs = bin.substring(10,13);
                         rt = bin.substring(13,16);
                         offset = bin.substring(16,32);
-                        
+
 
                         mem[convertBinarytoDecimal(rs) + convertBinarytoDecimal(offset)] =  String.valueOf(Register[convertBinarytoDecimal(rt)]);
                         break;
@@ -125,7 +124,11 @@ public class main {
                         rd = bin.substring(13,16);
 
                         Register[convertBinarytoDecimal(rd)] = state+1;
-                        if(Register[convertBinarytoDecimal(rs)] == Register[convertBinarytoDecimal(rd)]) break;
+                        if(Register[convertBinarytoDecimal(rs)] == Register[convertBinarytoDecimal(rd)])
+                        {
+                            state = Register[convertBinarytoDecimal(rd)];
+                            break;
+                        }
                         else {
                             state = Register[convertBinarytoDecimal(rs)];
                             break;
