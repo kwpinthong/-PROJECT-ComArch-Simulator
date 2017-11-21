@@ -21,6 +21,7 @@ public class main {
         String rt;
         String rd;
         String op;
+        int yow[] = new int[0];
         String offset;
         int state=0;
 
@@ -30,11 +31,9 @@ public class main {
         //Rule 7(simulator) Initialize all Register to 0
         for(int i = 0;i<Register.length;i++) Register[i] = 0;
 
-        System.out.println("Example Run of Simulator");
-
         String test = "";
         //----Read file and input each line in array-list----//
-        Scanner file = new Scanner(new File("output.txt"));
+        Scanner file = new Scanner(new File("inputMulti.txt"));
         List<String> line = new ArrayList<>();
         while (file.hasNextLine()){line.add(file.nextLine());}
         String[] mem = line.toArray(new String[0]); //Add every lines form array-list to array
@@ -61,13 +60,12 @@ public class main {
                         rs = bin.substring(10,13);
                         rt = bin.substring(13,16);
                         rd = bin.substring(29,32);
+                        //System.out.println("this register" + rd);
                         //System.out.println(Register[Integer.parseInt(rt)]);
                         int tmprs = Register[convertBinarytoDecimal(rs)];
                         int tmprt = Register[convertBinarytoDecimal(rt)];
+                        Register[convertBinarytoDecimal(rd)] =tmprs+tmprt;
 
-                        //System.out.println(tmprs);
-                        add adds = new add(tmprs,tmprt);
-                        Register[Integer.parseInt(rd)] = adds.doAdd();
                         //Done
                         break;
                     case "001" :
@@ -76,9 +74,12 @@ public class main {
                         rt = bin.substring(13,16);
                         rd = bin.substring(29,32);
 
+                        int valrs = Register[convertBinarytoDecimal(rs)];
+                        int valrt = Register[convertBinarytoDecimal(rt)];
 
 
-                        nand nand;
+                        Register[convertBinarytoDecimal(rd)] = ~( valrs & valrt);
+
                         break;
                     case "010" :
                         //test = "lw";
@@ -94,6 +95,8 @@ public class main {
                         rs = bin.substring(10,13);
                         rt = bin.substring(13,16);
                         offset = bin.substring(16,32);
+
+                        mem[convertBinarytoDecimal(rs) + convertBinarytoDecimal(offset)] =  String.valueOf(Register[convertBinarytoDecimal(rt)]);
                         break;
                     case "100" :
                         //test = "beq";
