@@ -38,6 +38,7 @@ public class main {
         List<String> line = new ArrayList<>();
         while (file.hasNextLine()){line.add(file.nextLine());}
         String[] mem = new String[65536];
+        for(int i = 0;i<mem.length;i++)mem[i] = "0";
         String[] mem1 = line.toArray(new String[0]); //Add every lines form array-list to array
         sizeofline = mem1.length;
         for(int i=0; i < mem1.length; i++) mem[i] = mem1[i];
@@ -92,7 +93,7 @@ public class main {
                             rt = bin.substring(13, 16);
                             offset = bin.substring(16, 32);
 
-                            Register[convertBinarytoDecimal(rt)] = Integer.parseInt(mem[convertBinarytoDecimal(offset) + Register[convertBinarytoDecimal(rs)]]);
+                            Register[convertBinarytoDecimal(rt)] = Integer.parseInt(mem[twosCompliment(offset) + Register[convertBinarytoDecimal(rs)]]);
                             //Done
                             break;
                         case "011":
@@ -103,18 +104,16 @@ public class main {
                             offset = bin.substring(16, 32);
 
 
-                            mem[convertBinarytoDecimal(rs) + convertBinarytoDecimal(offset)] = String.valueOf(Register[convertBinarytoDecimal(rt)]);
+                            mem[convertBinarytoDecimal(rs) + twosCompliment(offset)] = String.valueOf(Register[convertBinarytoDecimal(rt)]);
                             break;
                         case "100":
                             //test = "beq";
                             rs = bin.substring(10, 13);
                             rt = bin.substring(13, 16);
                             offset = bin.substring(16, 32);
-                            //System.out.println(bin.substring(16,32));
-                            //offset = convertBinarytoDecimal(bin.substring(16,32));
 
                             if (Register[convertBinarytoDecimal(rs)] == Register[convertBinarytoDecimal(rt)]) {
-                                state = state + convertBinarytoDecimal(offset);
+                                state = state + twosCompliment(offset);
                                 break;
                             } else break;
 
@@ -212,6 +211,29 @@ public class main {
             System.out.println("\t\treg[ "+i+" ] " + Register[i]);
         }
         System.out.println("end state");
+    }
+
+    public static int twosCompliment(String bin) {
+        String bin32 = convertNum(bin);
+        int tmp;
+        if (Integer.parseInt(bin32.substring(0,1)) == 1)
+        {
+            tmp = convertBinarytoDecimal(negconvert(bin32)) + 1;
+            tmp = -tmp;
+        }
+        else tmp = convertBinarytoDecimal(bin32);
+        return tmp;
+    }
+
+    public static String negconvert(String bin)
+    {
+        String tmp="";
+        for(int i = 0; i<bin.length();i++)
+        {
+            if(Integer.parseInt(bin.substring(i,i+1)) == 1) tmp +="0";
+            else tmp += "1";
+        }
+        return tmp;
     }
 
 }
