@@ -34,7 +34,7 @@ public class main {
 
         String test = "";
         //----Read file and input each line in array-list----//
-        Scanner file = new Scanner(new File("inputComb.txt"));
+        Scanner file = new Scanner(new File("output.txt"));
         List<String> line = new ArrayList<>();
         while (file.hasNextLine()){line.add(file.nextLine());}
         String[] mem = new String[65536];
@@ -47,13 +47,10 @@ public class main {
 
         //---------------------------------------------------//
         for(; state < sizeofline ; state++) {
+            printState(mem, Register, state, sizeofline);
             if (ishalt) {
-                System.out.println("machine halted");
-                System.out.println("total of " + state_num + " instructions executed\n");
-                System.out.println("final state of machine:\n");
+                break;
             } else {
-                printState(mem, Register, state, sizeofline);
-
                 bin = toBinary(Integer.toBinaryString(Integer.parseInt(mem[state])));
 
                 op = bin.substring(7, 10);
@@ -138,6 +135,9 @@ public class main {
                         case "110":
                             test = "halt";
                             ishalt =true;
+                            System.out.println("machine halted");
+                            System.out.println("total of " + state_num + " instructions executed\n");
+                            System.out.println("final state of machine:\n");
 
                             break;
                         case "111":
