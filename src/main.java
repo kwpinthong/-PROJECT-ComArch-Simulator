@@ -34,7 +34,7 @@ public class main {
 
         String test = "";
         //----Read file and input each line in array-list----//
-        Scanner file = new Scanner(new File("output.txt"));
+        Scanner file = new Scanner(new File("example2.txt"));
         List<String> line = new ArrayList<>();
         while (file.hasNextLine()){line.add(file.nextLine());}
         String[] mem = new String[65536];
@@ -183,8 +183,7 @@ public class main {
             remainder = number %10;
             number /= 10;
 
-            if(i==num.length()-1)dec += (int)remainder* Math.pow(-2,i);
-            else dec += (int)remainder* Math.pow(2,i);
+            dec += (int)remainder* Math.pow(2,i);
         }
         return dec;
     }
