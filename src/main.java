@@ -25,6 +25,7 @@ public class main {
         String offset;
         int state=0;
 
+        boolean ishalt=false;
         int state_num=1;
         int Register[] = new int[8];
 
@@ -45,116 +46,115 @@ public class main {
 
 
         //---------------------------------------------------//
-        for(; state < sizeofline ; state++){
-            printState(mem,Register,state,sizeofline);
+        for(; state < sizeofline ; state++) {
+            if (ishalt) {
+                System.out.println("machine halted");
+                System.out.println("total of " + state_num + " instructions executed\n");
+                System.out.println("final state of machine:\n");
+            } else {
+                printState(mem, Register, state, sizeofline);
 
-            bin = toBinary(Integer.toBinaryString(Integer.parseInt(mem[state])));
+                bin = toBinary(Integer.toBinaryString(Integer.parseInt(mem[state])));
 
-            op = bin.substring(7,10);
-
-
-            if ((Integer.parseInt(mem[state]) > -32768 && (Integer.parseInt(mem[state])) < 32767))
-            {
-                break;
-            }
-            else {
-                switch (op){
-                    case "000" :
-                        //test = "add";
-                        rs = bin.substring(10,13);
-                        rt = bin.substring(13,16);
-                        rd = bin.substring(29,32);
-                        //System.out.println("this register" + rd);
-                        //System.out.println(Register[Integer.parseInt(rt)]);
-                        int tmprs = Register[convertBinarytoDecimal(rs)];
-                        int tmprt = Register[convertBinarytoDecimal(rt)];
-                        Register[convertBinarytoDecimal(rd)] =tmprs+tmprt;
-
-                        //Done
-                        break;
-                    case "001" :
-                        //test = "nand";
-                        rs = bin.substring(10,13);
-                        rt = bin.substring(13,16);
-                        rd = bin.substring(29,32);
-
-                        int valrs = Register[convertBinarytoDecimal(rs)];
-                        int valrt = Register[convertBinarytoDecimal(rt)];
+                op = bin.substring(7, 10);
 
 
-                        Register[convertBinarytoDecimal(rd)] = ~( valrs & valrt);
+                if ((Integer.parseInt(mem[state]) > -32768 && (Integer.parseInt(mem[state])) < 32767)) {
+                    break;
+                } else {
+                    switch (op) {
+                        case "000":
+                            //test = "add";
+                            rs = bin.substring(10, 13);
+                            rt = bin.substring(13, 16);
+                            rd = bin.substring(29, 32);
+                            //System.out.println("this register" + rd);
+                            //System.out.println(Register[Integer.parseInt(rt)]);
+                            int tmprs = Register[convertBinarytoDecimal(rs)];
+                            int tmprt = Register[convertBinarytoDecimal(rt)];
+                            Register[convertBinarytoDecimal(rd)] = tmprs + tmprt;
 
-                        break;
-                    case "010" :
-                        //test = "lw";
-                        rs = bin.substring(10,13);
-                        rt = bin.substring(13,16);
-                        offset = bin.substring(16,32);
-
-                        Register[convertBinarytoDecimal(rt)] = Integer.parseInt(mem[convertBinarytoDecimal(offset) + Register[convertBinarytoDecimal(rs)]]);
-                        //Done
-                        break;
-                    case "011" :
-                        //test = "sw";
-
-                        rs = bin.substring(10,13);
-                        rt = bin.substring(13,16);
-                        offset = bin.substring(16,32);
-
-
-                        mem[convertBinarytoDecimal(rs) + convertBinarytoDecimal(offset)] =  String.valueOf(Register[convertBinarytoDecimal(rt)]);
-                        break;
-                    case "100" :
-                        //test = "beq";
-                        rs = bin.substring(10,13);
-                        rt = bin.substring(13,16);
-                        offset = bin.substring(16,32);
-                        //System.out.println(bin.substring(16,32));
-                        //offset = convertBinarytoDecimal(bin.substring(16,32));
-
-                        if(Register[convertBinarytoDecimal(rs)] == Register[convertBinarytoDecimal(rt)]) {
-                            state = state + convertBinarytoDecimal(offset);
+                            //Done
                             break;
-                        }
-                        else break;
+                        case "001":
+                            //test = "nand";
+                            rs = bin.substring(10, 13);
+                            rt = bin.substring(13, 16);
+                            rd = bin.substring(29, 32);
 
-                    case "101" :
-                        //test = "jalr";
-                        rs = bin.substring(10,13);
-                        rd = bin.substring(13,16);
+                            int valrs = Register[convertBinarytoDecimal(rs)];
+                            int valrt = Register[convertBinarytoDecimal(rt)];
 
-                        Register[convertBinarytoDecimal(rd)] = state+1;
-                        if(Register[convertBinarytoDecimal(rs)] == Register[convertBinarytoDecimal(rd)])
-                        {
-                            state = Register[convertBinarytoDecimal(rd)];
+
+                            Register[convertBinarytoDecimal(rd)] = ~(valrs & valrt);
+
                             break;
-                        }
-                        else {
-                            state = Register[convertBinarytoDecimal(rs)];
+                        case "010":
+                            //test = "lw";
+                            rs = bin.substring(10, 13);
+                            rt = bin.substring(13, 16);
+                            offset = bin.substring(16, 32);
+
+                            Register[convertBinarytoDecimal(rt)] = Integer.parseInt(mem[convertBinarytoDecimal(offset) + Register[convertBinarytoDecimal(rs)]]);
+                            //Done
                             break;
-                        }
+                        case "011":
+                            //test = "sw";
 
-                    case "110" :
-                        test = "halt";
-                        System.out.println("machine halted");
-                        System.out.println("total of "+ state_num +" instructions executed\n");
-                        System.out.println("final state of machine:\n");
+                            rs = bin.substring(10, 13);
+                            rt = bin.substring(13, 16);
+                            offset = bin.substring(16, 32);
 
-                        break;
-                    case "111" :
-                        test = "noop";
-                        break;
-                    default:
-                        System.out.println("Error : Put wrong OP CODE");
+
+                            mem[convertBinarytoDecimal(rs) + convertBinarytoDecimal(offset)] = String.valueOf(Register[convertBinarytoDecimal(rt)]);
+                            break;
+                        case "100":
+                            //test = "beq";
+                            rs = bin.substring(10, 13);
+                            rt = bin.substring(13, 16);
+                            offset = bin.substring(16, 32);
+                            //System.out.println(bin.substring(16,32));
+                            //offset = convertBinarytoDecimal(bin.substring(16,32));
+
+                            if (Register[convertBinarytoDecimal(rs)] == Register[convertBinarytoDecimal(rt)]) {
+                                state = state + convertBinarytoDecimal(offset);
+                                break;
+                            } else break;
+
+                        case "101":
+                            //test = "jalr";
+                            rs = bin.substring(10, 13);
+                            rd = bin.substring(13, 16);
+
+                            Register[convertBinarytoDecimal(rd)] = state + 1;
+                            if (Register[convertBinarytoDecimal(rs)] == Register[convertBinarytoDecimal(rd)]) {
+                                state = Register[convertBinarytoDecimal(rd)];
+                                break;
+                            } else {
+                                state = Register[convertBinarytoDecimal(rs)];
+                                break;
+                            }
+
+                        case "110":
+                            test = "halt";
+                            ishalt =true;
+
+                            break;
+                        case "111":
+                            test = "noop";
+                            break;
+                        default:
+                            System.out.println("Error : Put wrong OP CODE");
+                    }
+
+
                 }
 
 
+                state_num++;
+
 
             }
-
-
-            state_num++;
-
 
         }
 
