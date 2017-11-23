@@ -34,7 +34,7 @@ public class main {
 
         String test = "";
         //----Read file and input each line in array-list----//
-        Scanner file = new Scanner(new File("[DONE]/allinstruct.txt"));
+        Scanner file = new Scanner(new File("example2.txt"));
         List<String> line = new ArrayList<>();
         while (file.hasNextLine()){line.add(file.nextLine());}
         String[] mem = new String[65536];
@@ -49,7 +49,7 @@ public class main {
         //---------------------------------------------------//
         for(; state < sizeofline ; state++) {
             printState(mem, Register, state, sizeofline);
-            if (ishalt) {
+            if (ishalt){
                 break;
             } else {
                 bin = toBinary(Integer.toBinaryString(Integer.parseInt(mem[state])));
@@ -123,12 +123,10 @@ public class main {
                             rd = bin.substring(13, 16);
 
                             Register[convertBinarytoDecimal(rd)] = state + 1;
-                            if (Register[convertBinarytoDecimal(rs)] == Register[convertBinarytoDecimal(rd)]) {
-                                state = Register[convertBinarytoDecimal(rs)];
+                            if (rs == rd) {
                                 break;
                             } else {
-                                state = Register[convertBinarytoDecimal(rd)];
-                                break;
+                                state = Register[convertBinarytoDecimal(rs)];
                             }
                         case "110":
                             test = "halt";
@@ -168,7 +166,6 @@ public class main {
             tmp = "0" + tmp;
             count++;
         }
-        //System.out.println(tmp);
         return tmp;
     }
     
