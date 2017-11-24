@@ -34,7 +34,7 @@ public class main {
 
         String test = "";
         //----Read file and input each line in array-list----//
-        Scanner file = new Scanner(new File("inputComb.txt"));
+        Scanner file = new Scanner(new File("inputMulti.txt"));
         List<String> line = new ArrayList<>();
         while (file.hasNextLine()){line.add(file.nextLine());}
         String[] mem = new String[65536];
@@ -112,8 +112,8 @@ public class main {
                             rt = bin.substring(13, 16);
                             offset = bin.substring(16, 32);
 
-                            if (rs == rt) {
-                                state = state + twosCompliment(offset);
+                            if (Register[convertBinarytoDecimal(rs)] == Register[convertBinarytoDecimal(rt)]) {
+                                state = state+ twosCompliment(offset);
                                 break;
                             } else break;
 
