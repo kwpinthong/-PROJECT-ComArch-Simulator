@@ -122,11 +122,14 @@ public class main {
                             rs = bin.substring(10, 13);
                             rd = bin.substring(13, 16);
 
+
                             Register[convertBinarytoDecimal(rd)] = state + 1;
                             if (rs == rd) {
+                                state = Register[convertBinarytoDecimal(rd)];
                                 break;
                             } else {
-                                state = Register[convertBinarytoDecimal(rs)];
+                                state = Register[convertBinarytoDecimal(rs)] ;
+                                break;
                             }
                         case "110":
                             test = "halt";
