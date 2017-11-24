@@ -23,10 +23,10 @@ public class main {
         String op;
         int sizeofline;
         String offset;
-        int state=0;
+        int state = 0;
 
         boolean ishalt=false;
-        int state_num=1;
+        int state_num=0;
         int Register[] = new int[8];
 
         //Rule 7(simulator) Initialize all Register to 0
@@ -47,19 +47,17 @@ public class main {
 
 
         //---------------------------------------------------//
-        for(; state < sizeofline ; state++) {
-            printState(mem, Register, state, sizeofline);
-            if (ishalt){
-                break;
-            } else {
+//            while (state_num != 100){
+           while (!ishalt){
+                printState(mem, Register, state, sizeofline);
                 bin = toBinary(Integer.toBinaryString(Integer.parseInt(mem[state])));
+                state++;
+                state_num++;
 
                 op = bin.substring(7, 10);
 
 
-                if ((Integer.parseInt(mem[state]) > -32768 && (Integer.parseInt(mem[state])) < 32767)) {
-                    break;
-                } else {
+                {
                     switch (op) {
                         case "000":
                             //test = "add";
@@ -104,7 +102,7 @@ public class main {
                             offset = bin.substring(16, 32);
 
 
-                            mem[convertBinarytoDecimal(rs) + twosCompliment(offset)] = String.valueOf(Register[convertBinarytoDecimal(rt)]);
+                            mem[Register[convertBinarytoDecimal(rs)] + twosCompliment(offset)] = String.valueOf(Register[convertBinarytoDecimal(rt)]);
                             break;
                         case "100":
                             //test = "beq";
@@ -113,9 +111,9 @@ public class main {
                             offset = bin.substring(16, 32);
 
                             if (Register[convertBinarytoDecimal(rs)] == Register[convertBinarytoDecimal(rt)]) {
-                                state = state+ twosCompliment(offset);
-                                break;
-                            } else break;
+                                state += twosCompliment(offset);
+                            }
+                            break;
 
                         case "101":
                             //test = "jalr";
@@ -123,14 +121,9 @@ public class main {
                             rd = bin.substring(13, 16);
 
 
-                            Register[convertBinarytoDecimal(rd)] = state + 1;
-                            if (rs == rd) {
-                                state = Register[convertBinarytoDecimal(rd)];
-                                break;
-                            } else {
-                                state = Register[convertBinarytoDecimal(rs)] ;
-                                break;
-                            }
+                            Register[convertBinarytoDecimal(rd)] = state;
+                            state = Register[convertBinarytoDecimal(rs)];
+                            break;
                         case "110":
                             test = "halt";
                             ishalt =true;
@@ -149,17 +142,14 @@ public class main {
 
                 }
 
-
-                state_num++;
-
-
             }
+        printState(mem, Register, state, sizeofline);
 
         }
 
 
 
-    }
+
 
     public static String toBinary(String int1){
         int count;
